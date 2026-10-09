@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A clean, modern library management dashboard built with HTML, CSS and JavaScript.">
+  <title>Leafline — Library Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Leafline home">
+        <span class="brand-mark">L</span><span>leafline<span class="brand-dot">.</span></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" data-view="catalog"><span class="nav-icon">▤</span> Book catalog</button>
+        <button class="nav-item" data-view="members"><span class="nav-icon">♙</span> Members</button>
+        <button class="nav-item" data-view="loans"><span class="nav-icon">↗</span> Borrowing desk</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card">
+          <div class="tip-icon">✦</div>
+          <p class="tip-title">A little reading goes a long way.</p>
+          <p class="tip-copy">Keep discovering something new every day.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">AD</div>
+          <div><strong>Admin Desk</strong><span>Library administrator</span></div>
+          <span class="profile-menu">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumbCurrent">Overview</strong></div>
+        <div class="top-actions">
+          <span class="today-label" id="todayLabel"></span>
+          <button class="icon-button" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+          <div class="top-avatar">AD</div>
+        </div>
+      </header>
+
+      <section class="view active-view" id="dashboardView">
+        <div class="welcome-row">
+          <div><p class="eyebrow">YOUR LIBRARY, AT A GLANCE</p><h1>Good evening, Admin <span class="wave">✦</span></h1><p class="subtitle">Here’s what’s happening at your library today.</p></div>
+          <button class="primary-button" id="addBookTop"><span>＋</span> Add a book</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total books</span><span class="stat-icon mint">▤</span></div><div class="stat-number" id="totalBooks">0</div><div class="stat-foot"><span class="dot green"></span> Across your collection</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Active loans</span><span class="stat-icon lilac">↗</span></div><div class="stat-number" id="activeLoans">0</div><div class="stat-foot"><span class="dot purple"></span> Books currently borrowed</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Registered members</span><span class="stat-icon peach">♙</span></div><div class="stat-number" id="totalMembers">0</div><div class="stat-foot"><span class="dot orange"></span> Readers in your community</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Overdue returns</span><span class="stat-icon rose">◷</span></div><div class="stat-number" id="overdueLoans">0</div><div class="stat-foot"><span class="dot red"></span> Need your attention</div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel catalog-panel">
+            <div class="panel-heading"><div><h2>Popular in the collection</h2><p>Explore books readers might love.</p></div><button class="text-button" data-go="catalog">View catalog <span>→</span></button></div>
+            <div class="book-grid" id="featuredBooks"></div>
+          </section>
+          <section class="panel activity-panel">
+            <div class="panel-heading"><div><h2>Borrowing desk</h2><p>Your latest library activity.</p></div><button class="more-button" data-go="loans" aria-label="View all loans">•••</button></div>
+            <div id="recentLoans" class="recent-list"></div>
+          </section>
+        </div>
+        <section class="panel quick-panel">
+          <div class="panel-heading"><div><h2>Quick actions</h2><p>Common tasks, one click away.</p></div></div>
+          <div class="quick-actions">
+            <button class="quick-action" id="quickAddBook"><span class="quick-symbol green-bg">＋</span><span><strong>Add new book</strong><small>Grow your collection</small></span><span class="quick-arrow">↗</span></button>
+            <button class="quick-action" id="quickAddMember"><span class="quick-symbol purple-bg">♙</span><span><strong>Register member</strong><small>Welcome a new reader</small></span><span class="quick-arrow">↗</span></button>
+            <button class="quick-action" id="quickLoan"><span class="quick-symbol orange-bg">↗</span><span><strong>Issue a book</strong><small>Start a new borrowing</small></span><span class="quick-arrow">↗</span></button>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="catalogView">
+        <div class="page-heading"><div><p class="eyebrow">THE COLLECTION</p><h1>Book catalog</h1><p class="subtitle">Find, organize and manage every title in your library.</p></div><button class="primary-button" id="addBookCatalog">＋ Add a book</button></div>
+        <section class="panel">
+          <div class="toolbar"><div class="search-box"><span>⌕</span><input id="bookSearch" type="search" placeholder="Search by title, author or category..." aria-label="Search books"></div><select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select><select id="availabilityFilter" aria-label="Filter by availability"><option value="all">All availability</option><option value="available">Available</option><option value="borrowed">Borrowed</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>BOOK</th><th>CATEGORY</th><th>AVAILABILITY</th><th>STOCK</th><th>ACTION</th></tr></thead><tbody id="booksTable"></tbody></table></div>
+          <div class="empty-state hidden" id="booksEmpty">No books match your search. Try another keyword or add a new title.</div>
+        </section>
+      </section>
+
+      <section class="view" id="membersView">
+        <div class="page-heading"><div><p class="eyebrow">YOUR READING COMMUNITY</p><h1>Members</h1><p class="subtitle">Manage registered readers and their borrowing activity.</p></div><button class="primary-button" id="addMemberButton">＋ Add member</button></div>
+        <section class="panel"><div class="toolbar"><div class="search-box"><span>⌕</span><input id="memberSearch" type="search" placeholder="Search members..." aria-label="Search members"></div></div>
+          <div class="table-wrap"><table><thead><tr><th>MEMBER</th><th>EMAIL</th><th>JOINED</th><th>ACTIVE LOANS</th><th>ACTION</th></tr></thead><tbody id="membersTable"></tbody></table></div>
+          <div class="empty-state hidden" id="membersEmpty">No members found. Register your first reader to get started.</div>
+        </section>
+      </section>
+
+      <section class="view" id="loansView">
+        <div class="page-heading"><div><p class="eyebrow">CHECK-IN / CHECK-OUT</p><h1>Borrowing desk</h1><p class="subtitle">Issue books, track due dates and record returns.</p></div><button class="primary-button" id="issueBookButton">＋ Issue a book</button></div>
+        <section class="panel"><div class="toolbar"><div class="search-box"><span>⌕</span><input id="loanSearch" type="search" placeholder="Search by book or member..." aria-label="Search loans"></div><select id="loanFilter" aria-label="Filter loans"><option value="all">All loans</option><option value="active">Currently borrowed</option><option value="overdue">Overdue</option><option value="returned">Returned</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>BOOK</th><th>MEMBER</th><th>ISSUED</th><th>DUE DATE</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="loansTable"></tbody></table></div>
+          <div class="empty-state hidden" id="loansEmpty">No borrowing records match this filter.</div>
+        </section>
+      </section>
+      <footer class="footer"><span>© <span id="year"></span> Leafline Library</span><span>Made for curious minds <span class="footer-heart">♥</span></span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><p class="eyebrow" id="modalEyebrow">LIBRARY MANAGEMENT</p><h2 id="modalTitle">Add a book</h2></div><button class="close-button" id="closeModal" aria-label="Close dialog">×</button></div>
+      <form id="modalForm"><div id="modalFields" class="form-fields"></div><p class="form-error hidden" id="formError"></p><div class="modal-actions"><button type="button" class="secondary-button" id="cancelModal">Cancel</button><button type="submit" class="primary-button" id="modalSubmit">Save changes</button></div></form>
+    </section>
+  </div>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"><span class="toast-check">✓</span><span id="toastMessage">Saved successfully</span></div>
+  <script src="script.js"></script>
+</body>
+</html>
